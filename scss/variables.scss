@@ -1,0 +1,46 @@
+*{
+    font-size: 62.5%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+}
+
+// Colores
+
+$color-general1: #286c8b;
+$color-general2: #013355;
+
+$color-txt1: white;
+$color-txt2: #5e5e5e;
+
+$color-background1: #ffffff7a;
+$color-background2: #44b9f0;
+$color-background3: #111;
+$color-background4: #e6571e;
+// tamaño de fuentes
+
+$text-xs: 1.5rem;
+$text-s :   2rem;
+$text-m : 2.5rem;
+$text-l :   3rem;
+
+// animaciones
+
+@mixin articleAnimation{
+        img{
+            transform: scale(1.5);
+        }
+        svg{
+            transform: translateX(40px);
+        }
+
+}
+
+.inactive{
+    display: none;
+}
+
+.opacate{
+    opacity: 0.2;
+}
