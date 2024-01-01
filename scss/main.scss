@@ -116,6 +116,7 @@ body{
 
             .mobile{
                 margin-right: 14px;
+
                 button{
                     width: 45px;
                     height: 45px;
@@ -126,11 +127,14 @@ body{
                     background-color: $color-general2;
                     border: none;
                 }
-
                 
                 .X{
                     display: none;
                     background-color: red;
+                }
+
+                @include querie-m{
+                    display: none;
                 }
             }
         }
