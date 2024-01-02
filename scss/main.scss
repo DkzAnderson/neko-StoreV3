@@ -24,12 +24,23 @@ body{
             display: flex;
             width: 100%;
             justify-content: space-between;
+            align-items: center;
 
             @include querie-m{
                 display: flex;
                 
                 max-width: 990px;
                 padding: 0 15px;
+            }
+
+            picture{
+                display: flex;
+                width: 100px;
+                margin-left: 14px;
+
+                img{
+                    width: 100%;
+                }
             }
 
             nav{
@@ -627,8 +638,10 @@ body{
 
     }
 
+}
+
     // Solo en mobile
-    .Mobile-menu{
+body .Mobile-menu{
         flex-direction: column;
         position: absolute;
         height: 100vh;
@@ -689,6 +702,4 @@ body{
                 list-style: none;
             }
         }
-    }
-
 }
