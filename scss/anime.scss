@@ -130,6 +130,7 @@
             padding: 4px;
             background-color: $color-general1;
             border-radius: 8px;
+            max-width: 350px;
 
             img{
                 width: 100%;
@@ -240,8 +241,8 @@
             grid-template-areas: 
             "side content";
             grid-template-columns: 40% auto;
-
             align-items: start;
+
             .episode-list{
                 ul{
                     max-height: 800px;
@@ -261,6 +262,25 @@
     @include querie-s{
         align-items: center;
         max-width: 765px;
+    }
+
+    @include querie-m{
+        max-width: 1199px;
+
+        .contain{
+            grid-template-columns: 28% auto;
+
+            .episode-list ul{
+                max-height: 1000px;
+
+                li{
+                    grid-template-columns: 8% 15% auto;
+                    svg{
+                        justify-self: center;
+                    }
+                }
+            }
+        }
     }
 
 }
