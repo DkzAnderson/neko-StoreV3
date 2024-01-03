@@ -26,62 +26,89 @@ let html = {
     }
 }
 
-async function loadData (){
-    let episodeN = 1
-    const data = await JSON.parse(localStorage.getItem('animeSelected'));
-    animeSelected = data
 
-    html.title.innerText = animeSelected.name;
-    html.type.innerText = 'ANIME';
-    html.sypnosis.innerText = 'Descripción';
-    html.poster.src = animeSelected.img;
+let mediaPlayer = {
+    title     :$('.media-player_contain h3'),
+    iframe    :$('#iframe'),
+    btnAfter  :$('#after-cap'),
+    btnNext   :$('#next-cap'),
+    btnCapList:$('#cap-list')
+}
 
-    animeSelected.eps[0].forEach(element => {
-        let li      = $create('li')
-        let img     = $create('img')
-        let div     = $create('div')
-        let title   = $create('h4')
-        let episode = $create('h5')
-        let epN     = (episodeN-1)
-
-        console.log(element.indexOf);
-        li.innerHTML = icons.playM;
-        img.src = animeSelected.img;
-        title.innerText = animeSelected.name;
-        episode.innerText = `episodio ${episodeN}`
-        
-        div.append(title,episode);
-        li.append(img,div);
-
-        li.addEventListener('click',()=>{
-            episodeSelected = animeSelected.eps[0][epN];
-            localStorage.setItem('animeSelected', JSON.stringify(animeSelected));
-            /*
-                agregar ventana de reproductor
-                 cambiar 'anime.html'
-                window.open('anime.html','_self');
-            */
-            console.log(episodeSelected);
-        })
-
-
-
-
-        html.episodeList.ul.append(li);
-        episodeN++
-
-
-    });
-
-
-
+if(mediaPlayer.btnAfter != null){
+    mediaPlayer.btnAfter.style.display = 'flex'
+    mediaPlayer.btnNext.style.display = 'flex'
 }
 
 
+
+async function loadData (){
+    let episodeN = 1
+    const data = await JSON.parse(localStorage.getItem('animeSelected'));
+    episodeSelected = parseInt(localStorage.getItem('episodeSelected'))
+    animeSelected = data
+
+    // ejecutable para la página de descripcón
+    if(html.title!= undefined){
+
+        html.title.innerText = animeSelected.name;
+        html.type.innerText = 'ANIME';
+        html.sypnosis.innerText = 'Descripción';
+        html.poster.src = animeSelected.img;
+    
+        animeSelected.eps[0].forEach(element => {
+            let li      = $create('li')
+            let img     = $create('img')
+            let div     = $create('div')
+            let title   = $create('h4')
+            let episode = $create('h5')
+            let epN     = (episodeN-1)
+    
+            //console.log(element.indexOf);
+            li.innerHTML = icons.playM;
+            img.src = animeSelected.img;
+            title.innerText = animeSelected.name;
+            episode.innerText = `episodio ${episodeN}`
+            
+            div.append(title,episode);
+            li.append(img,div);
+    
+            li.addEventListener('click',()=>{
+                episodeSelected = animeSelected.eps[0][epN];
+                localStorage.setItem('animeSelected', JSON.stringify(animeSelected));
+                localStorage.setItem('episodeSelected', epN);
+                
+                window.open('media-player.html','_self');
+                
+            });
+            
+            html.episodeList.ul.append(li);
+            episodeN++
+        });
+    }
+    // ejecutable para la página media-player
+    if(mediaPlayer.iframe != undefined){
+        mediaPlayer.title.innerText = `${data.name} episodio ${episodeSelected+1}`;
+        mediaPlayer.iframe.src = data.eps[0][episodeSelected]
+
+        if(episodeSelected == 0) mediaPlayer.btnAfter.style.display = 'none'
+        else mediaPlayer.btnAfter.style.display = 'flex'
+
+        if(episodeSelected+1 == data.eps[0].length) mediaPlayer.btnNext.style.display = 'none'
+        else mediaPlayer.btnNext.style.display = 'flex'
+
+    }
+
+}
+
 function ShowMenuMobile(){
+
+    if($('.main') != null) $('.main').classList.toggle('opacate');
+    if($('.media-player_contain') != null) $('.media-player_contain').classList.toggle('opacate');
     $('.header-main .container nav').classList.toggle('opacate');
-    $('.main').classList.toggle('opacate');
     $('.footer').classList.toggle('opacate');
+
+
     menuBtn[0].classList.toggle('inactive');
     menuBtn[1].classList.toggle('inactive');
     
@@ -103,7 +130,20 @@ function ShowMenuMobile(){
 
 }
 
-// domo
+function showNextAfterEp(value){
+    if(value == 'after'){
+        episodeSelected--
+        localStorage.setItem('episodeSelected', JSON.stringify(episodeSelected));
+        loadData()
+    } else {
+        episodeSelected++
+        localStorage.setItem('episodeSelected', JSON.stringify(episodeSelected));
+        loadData()
+    }
+}
+
+
 
 loadData();
+
 
