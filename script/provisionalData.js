@@ -53,7 +53,7 @@ async function loadData (){
 
         html.title.innerText = animeSelected.name;
         html.type.innerText = 'ANIME';
-        html.sypnosis.innerText = 'Descripción';
+        html.sypnosis.innerText = '';
         html.poster.src = animeSelected.img;
     
         animeSelected.eps[0].forEach(element => {
