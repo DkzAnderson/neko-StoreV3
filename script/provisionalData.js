@@ -233,7 +233,7 @@ async function loadData (){
                 let div = Complement({e:'div'});
                 let icon= Complement({e:'svg'});
                 icon.innerHTML = icons.playM;
-                console.log(iEp)
+
                 div.append(title,txt);
                 contEp.append(icon,img,div);
                 ul.append(contEp);
@@ -273,7 +273,6 @@ async function loadData (){
     // ejecutable para la página media-player
     if(mediaPlayer.iframe != undefined){
         // Agregado de datos
-        console.log(selected.episode-1)
         mediaPlayer.title.innerText = `${selected.anime.name} episodio ${selected.episode}`;
         mediaPlayer.iframe.src = selected.anime.Seasons[selected.season].episodes[selected.episode-1];
             // boton de regresar se elimina si no es necesario
