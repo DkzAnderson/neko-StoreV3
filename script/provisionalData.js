@@ -20,6 +20,10 @@ let icons = {
     arrowUp   :'<svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#e6571e" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" /></svg>',
 
 }
+
+const random = (min,max)=>{
+    return Math.floor(Math.random() * (max - min+1) + min)
+}
     // contenedores generales del html
 let html = {
     title: $('.anime-body .header .title h2'),
@@ -126,21 +130,29 @@ let Complement = (values)=>{
     // Inicializar Página
 function startRender(){
     let itemBox1 = (item)=> {
-        let article = Complement({e:'article'})
-        let div     = Complement({e:'div'})
-        let h4      = Complement({e:'h4', text:'Episode 1'});
+        let seasonRdm = item.Seasons.length-1;
+        let episodeRdm = item.Seasons[seasonRdm].episodes.length;
+
+        let article = Complement({e:'article'});
+        let div     = Complement({e:'div'});
+        let div2    = Complement({e:'div'});
+        let season  = Complement({e:'h4', text:item.Seasons[seasonRdm].name})
+        let h4      = Complement({e:'h4', text:`Episodio ${episodeRdm}`});
         let h5      = Complement({e:'h5', text:item.name}); 
         let picture = Complement({e:'picture'})
         let img     = Complement({e:'img', src: item.img, alt: item.name});
         
-        div.append(h4,h5);
+        div2.append(season,h4);
+        div.append(h5,div2);
         picture.append(img);
         article.append(div,picture);
     
         article.addEventListener('click', ()=>{
             selected.anime = item;
+            selected.season = seasonRdm;
+            selected.episode = episodeRdm;
             localStorage.setItem('selected', JSON.stringify(selected));
-            window.open('anime.html','_self');
+            window.open('media-player.html','_self');
         })
     
         return article;
@@ -193,7 +205,6 @@ function startRender(){
 }
     // cargar datos de serie seleccionada
 async function loadData (){
-    let episodeN = 1
     const data = await JSON.parse(localStorage.getItem('selected'));
     selected = data;
     // ejecutable para la página de descripcón
@@ -212,6 +223,7 @@ async function loadData (){
             let span = Complement({e:'span'});
             let ul   = Complement({e:'ul'});
             ul.style.display = 'none';
+            
             // creación de eps
             s.episodes.forEach(element =>{
                 let contEp = Complement({e:'li'});
@@ -221,7 +233,7 @@ async function loadData (){
                 let div = Complement({e:'div'});
                 let icon= Complement({e:'svg'});
                 icon.innerHTML = icons.playM;
-
+                console.log(iEp)
                 div.append(title,txt);
                 contEp.append(icon,img,div);
                 ul.append(contEp);
@@ -254,55 +266,16 @@ async function loadData (){
             span.append(h4,icon)
             li.append(span,ul);
             html.episodeList.seasons.append(li);
-            
-            /*
-                TODO :
-                Maquetar la vista de las temporadas y agregarle
-                un evento de click para que se muestren los 
-                episodios cuando le den click a una temporada
-                o a un icono al costado de la temporada
-            */
-
         });
         i = 1;
 
-        /*
-        animeSelected.Seasons[0].episodes.forEach(element => {
-            let li      = $create('li')
-            let img     = $create('img')
-            let div     = $create('div')
-            let title   = $create('h4')
-            let episode = $create('h5')
-            let epN     = (episodeN-1)
-    
-            //console.log(element.indexOf);
-            li.innerHTML = icons.playM;
-            img.src = animeSelected.img;
-            title.innerText = animeSelected.name;
-            episode.innerText = `episodio ${episodeN}`
-            
-            div.append(title,episode);
-            li.append(img,div);
-    
-            li.addEventListener('click',()=>{
-                episodeSelected = animeSelected.eps[0][epN];
-                localStorage.setItem('animeSelected', JSON.stringify(animeSelected));
-                localStorage.setItem('episodeSelected', epN);
-                
-                window.open('media-player.html','_self');
-                
-            });
-            
-            html.episodeList.ul.append(li);
-            episodeN++
-        });
-        */
     }
     // ejecutable para la página media-player
     if(mediaPlayer.iframe != undefined){
         // Agregado de datos
-        mediaPlayer.title.innerText = `${selected.anime.name} episodio ${selected.episode+1}`;
-        mediaPlayer.iframe.src = selected.anime.Seasons[selected.season].episodes[selected.episode];
+        console.log(selected.episode-1)
+        mediaPlayer.title.innerText = `${selected.anime.name} episodio ${selected.episode}`;
+        mediaPlayer.iframe.src = selected.anime.Seasons[selected.season].episodes[selected.episode-1];
             // boton de regresar se elimina si no es necesario
         if(selected.episode == 0) mediaPlayer.btnAfter.style.display = 'none'
         else mediaPlayer.btnAfter.style.display = 'flex'

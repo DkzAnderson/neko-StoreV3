@@ -49,6 +49,13 @@
                 gap: 5%;
                 color: $color-txt1;
 
+                a {
+                    font-size: $text-xs;
+                    text-decoration: none;
+                    cursor: pointer;
+                    color: $color-txt1;
+                }
+
                 h3{
                     font-size: $text-xs;
                     cursor: pointer;
